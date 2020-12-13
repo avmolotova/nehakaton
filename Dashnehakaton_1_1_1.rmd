@@ -1,0 +1,316 @@
+---
+title: "Правки в играх на Windows"
+output: 
+  flexdashboard::flex_dashboard:
+    theme: journal
+---
+
+Количество правок в месяц
+===================================== 
+
+Column 
+-------------------------------------
+    
+
+```{r}
+library(stringr)
+library(dplyr)
+library(readr)
+library(stringr)
+library(ggplot2)
+library(plotly)
+library(lubridate)
+library(scales)
+
+library(readr)
+n <- read_csv("~/n.csv")
+```
+
+    
+### **World of Tanks**
+
+[статья на Вики](http://ru.wikipedia.org/?curid=2104281)
+
+```{r}
+n2 = n %>% filter(page_id == 2104281)
+n2$timestamp <- as.Date(n2$timestamp)
+
+n2$timestamp_month = month(n2$timestamp)
+n2$timestamp_year = year(n2$timestamp)
+n2 = n2 %>% group_by(timestamp_year, timestamp_month) %>% add_tally(name = "count_month")
+```
+
+```{r}
+pl2 = 
+  ggplot(n2, aes(x = timestamp, y = count_month)) +
+  geom_line(colour = "#007439")+
+  geom_vline(xintercept = as.numeric(n2$release_date), color = "#A62800", size = 0.5)+
+  labs(title = "", x = "", y = "")+
+  scale_x_date(breaks = "9 month", date_labels = "%b\n%Y")+
+  ylim(0, 350)+
+  theme_classic()
+
+ggplotly(pl2)
+```
+   
+
+### **World of Warcraft**
+
+[статья на Вики](http://ru.wikipedia.org/?curid=109332)
+
+```{r}
+n3 = n %>% filter(page_id == 109332)
+n3$timestamp <- as.Date(n3$timestamp)
+
+n3$timestamp_month = month(n3$timestamp)
+n3$timestamp_year = year(n3$timestamp)
+n3 = n3 %>% group_by(timestamp_year, timestamp_month) %>% add_tally(name = "count_month")
+```
+
+
+```{r}
+pl3 = 
+  ggplot(n3, aes(x = timestamp, y = count_month)) +
+  geom_line(colour = "#007439")+
+  geom_vline(xintercept = as.numeric(n2$release_date), color = "#A62800", size = 0.5)+
+  labs(title = "", x = "", y = "")+
+  scale_x_date(breaks = "9 month", date_labels = "%b\n%Y")+
+  ylim(0, 350)+
+  theme_classic()
+
+ggplotly(pl3)
+```
+
+Column 
+-------------------------------------
+
+### **Lineage II**
+
+[статья на Вики](https://ru.wikipedia.org/?curid=109393)
+
+```{r}
+n1 = n %>% filter(page_id == 109393)
+n1$timestamp <- as.Date(n1$timestamp)
+
+#группируем поо месяцам и смотрим распределение по месяцам
+n1$timestamp_month = month(n1$timestamp)
+n1$timestamp_year = year(n1$timestamp)
+n1 = n1 %>% group_by(timestamp_year, timestamp_month) %>% add_tally(name = "count_month")
+
+```
+
+
+```{r}
+dates_vline <- as.Date(c("2002/03/19", "2003/10/01", "2004/04/28"))
+dates_vline <- which(n1$timestamp %in% dates_vline)
+
+pl1 = 
+  ggplot(n1, aes(x = timestamp, y = count_month)) +
+  geom_line(colour = "#007439")+
+  geom_vline(xintercept = as.numeric(n2$release_date), color = "#A62800", size = 0.5)+
+  labs(title = "", x = "", y = "")+
+  scale_x_date(breaks = "9 month", date_labels = "%b\n%Y")+
+  ylim(0, 350)+
+  theme_classic()
+
+
+
+ggplotly(pl1)
+```
+
+
+### **Perfect World**
+
+[статья на Вики](https://ru.wikipedia.org/?curid=1303421)
+
+```{r}
+n4 = n %>% filter(page_id == 1303421)
+n4$timestamp <- as.Date(n4$timestamp)
+
+#группируем поо месяцам и смотрим распределение по месяцам
+n4$timestamp_month = month(n4$timestamp)
+n4$timestamp_year = year(n4$timestamp)
+n4 = n4 %>% group_by(timestamp_year, timestamp_month) %>% add_tally(name = "count_month")
+```
+
+
+```{r}
+pl4 = 
+  ggplot(n4, aes(x = timestamp, y = count_month)) +
+  geom_line(colour = "#007439")+
+  geom_vline(xintercept = as.numeric(n2$release_date), color = "#A62800", size = 0.5)+
+  labs(title = "", x = "", y = "")+
+  scale_x_date(breaks = "9 month", date_labels = "%b\n%Y")+
+  ylim(0, 350)+
+  theme_classic()
+
+
+
+ggplotly(pl4)
+
+#здесь вообще дата релиза была до момента начала вноса поправок
+```
+
+### **Call of Duty 4: Modern Warfare**
+
+[статья на Вики](https://ru.wikipedia.org/wiki/Call_of_Duty_4:_Modern_Warfare)
+
+```{r}
+n5 = n %>% filter(page_id == 741703)
+n5$timestamp <- as.Date(n5$timestamp)
+
+#группируем поо месяцам и смотрим распределение по месяцам
+n5$timestamp_month = month(n5$timestamp)
+n5$timestamp_year = year(n5$timestamp)
+n5 = n5 %>% group_by(timestamp_year, timestamp_month) %>% add_tally(name = "count_month")
+
+```
+
+```{r}
+pl5 = 
+  ggplot(n5, aes(x = timestamp, y = count_month)) +
+  geom_line(colour = "#007439")+
+  geom_vline(xintercept = as.numeric(n2$release_date), color = "#A62800", size = 0.5)+
+  labs(title = "", x = "", y = "")+
+  scale_x_date(breaks = "9 month", date_labels = "%b\n%Y")+
+  ylim(0, 350)+
+  theme_classic()
+
+
+
+ggplotly(pl5)
+```
+
+
+Уникальные пользователи
+===================================== 
+
+
+Column 
+-------------------------------------
+
+> На графиках отображены пользователи, которые активно правят статьи по каждой игре.
+>
+>
+>
+>
+> Цветом выделены пользователи, пересекающиеся между статьями, что означает, что они активно вносят правки не по одной игре, а по нескольким.
+
+### **World of Tanks**
+
+```{r fig.width=10,fig.height=5}
+
+n2_users = subset(n2, select = c("c_ip", "c_username"))
+n2_users$users = coalesce(n2_users$c_ip, n2_users$c_username)
+n2_users = n2_users %>% 
+  count(users)
+
+n2_users$users = as.factor(n2_users$users)
+n2_users %>%
+filter(n > 25) %>%
+# mutate(users = fct_reorder(users, n, .desc = TRUE)) %>%
+ggplot() +
+geom_bar(aes(x=reorder(as.factor(users), n), y=n, fill = users), stat="identity", width=.9) +
+labs(
+x = NULL,
+y = NULL) + 
+theme_classic() + coord_flip() + theme(text = element_text(size=20), legend.position="none")  + 
+  scale_fill_manual(values = c("#015965","grey","grey","grey","grey","grey","grey","grey","grey","grey","grey","grey","grey"))
+```
+
+Column 
+-------------------------------------
+
+### **World of Warcraft**
+
+```{r fig.width=10,fig.height=5}
+
+n3_users = subset(n3, select = c("c_ip", "c_username"))
+n3_users$users = coalesce(n3_users$c_ip, n3_users$c_username)
+n3_users = n3_users %>% 
+  count(users)
+
+n3_users$users = as.factor(n3_users$users)
+n3_users %>%
+filter(n > 25) %>%
+# mutate(users = fct_reorder(users, n, .desc = TRUE)) %>%
+ggplot() +
+geom_bar(aes(x=reorder(as.factor(users), n), y=n, fill = users), stat="identity", width=.9) +
+labs(
+x = NULL,
+y = NULL) +
+theme_classic() + coord_flip() + theme(text = element_text(size=20), legend.position="none") +
+  scale_fill_manual(values = c("#015965","grey","grey","grey","grey","grey","#9EA400","#4E026E","grey","grey","grey","grey","grey","grey","grey","grey")) 
+
+```
+
+
+### **Lineage II**
+
+```{r fig.width=10,fig.height=5}
+n1_users = subset(n1, select = c("c_ip", "c_username"))
+n1_users$users = coalesce(n1_users$c_ip, n1_users$c_username)
+n1_users = n1_users %>% 
+  count(users)
+
+library(ggplot2)
+library(dplyr)
+library(forcats)
+
+n1_users$users = as.factor(n1_users$users)
+n1_users %>%
+filter(n > 25) %>%
+# mutate(users = fct_reorder(users, n, .desc = TRUE)) %>%
+ggplot() +
+geom_bar(aes(x=reorder(as.factor(users), n), y=n, fill = users), stat="identity", width=.9) +
+labs(
+x = NULL,
+y = NULL) +
+theme_classic() + coord_flip() + theme(text = element_text(size=20), legend.position="none") + 
+  scale_fill_manual(values = c("grey","grey","grey","#015965","grey","grey","grey","grey","grey","grey","grey","#9EA400","grey","#A65000","grey")) 
+
+```
+
+
+
+Column 
+-------------------------------------
+
+### **Perfect World**
+
+```{r fig.width=10,fig.height=5}
+
+n4_users = subset(n4, select = c("c_ip", "c_username"))
+n4_users$users = coalesce(n4_users$c_ip, n4_users$c_username)
+n4_users = n4_users %>% 
+  count(users)
+
+n4_users$users = as.factor(n4_users$users)
+n4_users %>%
+filter(n > 23) %>%
+# mutate(users = fct_reorder(users, n, .desc = TRUE)) %>%
+ggplot() +
+  geom_bar(aes(x=reorder(as.factor(users), n), y=n, fill = users), stat="identity", width=.9) +
+  labs(x = NULL, y = NULL) +
+  scale_fill_manual(values = c("grey","grey","#015965","grey","grey","#4E026E","grey","grey","grey","grey","#A65000")) +
+  theme_classic()+
+  theme(text = element_text(size=20), legend.position="none")+
+    coord_flip()
+
+``` 
+
+### **Call of Duty 4: Modern Warfare**
+
+```{r fig.width=10,fig.height=5}
+n5_users = subset(n5, select = c("c_ip", "c_username"))
+n5_users$users = coalesce(n5_users$c_ip, n5_users$c_username)
+n5_users = n5_users %>% 
+  count(users)
+
+n5_users$users = as.factor(n5_users$users)
+n5_users %>%
+filter(n > 20) %>%
+# mutate(users = fct_reorder(users, n, .desc = TRUE)) %>%
+ggplot() + geom_bar(aes(x=reorder(as.factor(users), n), y=n, fill = users), stat="identity", width=.9) +
+  scale_fill_manual(values = c("grey","grey","grey","grey","grey","grey","grey","#9EA400","grey","grey","grey","grey")) + labs( x = NULL, y = NULL) + theme_classic() + coord_flip() + theme(text = element_text(size=20), legend.position="none") 
+```
